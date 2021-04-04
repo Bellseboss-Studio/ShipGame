@@ -1,4 +1,5 @@
-﻿using Enemy;
+﻿using System;
+using Enemy;
 using UnityEngine;
 using View.BulletFactory;
 using Random = UnityEngine.Random;
@@ -17,40 +18,40 @@ namespace View.EnemyFactory
         [SerializeField] private float health;
         [SerializeField] private BulletsConfiguration bulletsConfiguration;
         [SerializeField] private Transform tranformWeapon;
+        [SerializeField] private int points;
+
+        private void Awake()
+        {
+            _enemy = new Enemy.Enemy(speedGeneric, health, this, new SeampleWeaponEnemy(), points);
+        }
 
         private void Start()
         {
-            _enemy = new Enemy.Enemy(speedGeneric, health, this, new SeampleWeaponEnemy());
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _bulletFactory = new BulletsFactory(Instantiate(bulletsConfiguration));
         }
 
         private void FixedUpdate()
-        {
-            if (Random.Range(0, 1000) < 20)
-            {
-                _enemy.Shoot();
-            }
+        { 
+            _enemy.Shoot();
         }
 
         private void Update()
         {
-            _rigidbody2D.velocity = _enemy.Velocity();
+            _rigidbody2D.velocity = _enemy.Velocity() * Time.deltaTime;
         }
 
-        public void Shooting(string bulletId)
+        public void Shooting(IWeaponEnemy weapon)
         {
-            var bullet = _bulletFactory.Create(bulletId);
+            var bullet = _bulletFactory.Create(weapon.BulletId());
             bullet.transform.position = tranformWeapon.position;
             bullet.tag = tag;
         }
-
         public void StartDied()
         {
-            Debug.Log($"Start animation Died");
             DestroyHimself();
         }
-
+        
         private void DestroyHimself()
         {
             Destroy(gameObject);
@@ -60,13 +61,19 @@ namespace View.EnemyFactory
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                _enemy.Hit(2);
+                var damage = other.gameObject.GetComponent<IBullet>().GetDamage();
+                _enemy.Hit(damage);
             }
         }
 
-        public void ChangedWeapon(IWeaponEnemy weapon)
+        public IEnemy GetEnemyLogic()
         {
-            _weaponEnemy = weapon;
+            return _enemy;
+        }
+
+        public int Random(int min, int max)
+        {
+            return  UnityEngine.Random.Range(min, max);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IBulletView
     {
-        void Shoot(string bulletgeneric);
+        void Shoot(IWeapon bulletgeneric);
     }    
 }

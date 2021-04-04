@@ -4,13 +4,15 @@ using UnityEngine.Serialization;
 
 namespace View.BulletFactory
 {
-    public abstract class BulletGeneric : MonoBehaviour
+    public abstract class BulletGeneric : MonoBehaviour, IBullet 
     {
         [SerializeField] private string id;
         public string Id => id;
         [SerializeField] private float speed;
 
         [SerializeField] private bool isBulletPlayer;
+
+        [SerializeField] private float damage;
     
         private Rigidbody2D _rigidbody2D;
 
@@ -41,6 +43,16 @@ namespace View.BulletFactory
         private void DestroyHimself()
         {
             Destroy(gameObject);
+        }
+
+        public float GetDamage()
+        {
+            return damage;
+        }
+
+        public void AddDamage(float increment)
+        {
+            damage += increment;
         }
     }
 }

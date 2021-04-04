@@ -11,7 +11,7 @@ namespace Enemy.EnemyTDD
         {
             var shotView = Substitute.For<IWeaponEnemy>();
             var enemyview = Substitute.For<IEnemyView>();
-            var enemy = new Enemy(1,10,enemyview,shotView);
+            var enemy = new Enemy(1,10,enemyview,shotView,0);
 
             enemy.Hit(2);
             
@@ -24,7 +24,7 @@ namespace Enemy.EnemyTDD
         {
             var shotView = Substitute.For<IWeaponEnemy>();
             var enemyview = Substitute.For<IEnemyView>();
-            var enemy = new Enemy(1,10,enemyview,shotView);
+            var enemy = new Enemy(1,10,enemyview,shotView,0);
 
             enemy.Hit(20);
 

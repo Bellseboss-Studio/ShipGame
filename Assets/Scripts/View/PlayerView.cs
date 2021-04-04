@@ -1,4 +1,5 @@
 ﻿using System;
+using Enemy;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,9 +35,10 @@ namespace View
         }
 
 
-        public void Shoot(string bulletgeneric)
+        public void Shoot(IWeapon weapon)
         {
-            var bullet = _bulletFactory.Create(bulletgeneric);
+            var bullet = _bulletFactory.Create(weapon.GetBulletId());
+            bullet.AddDamage(weapon.GetDamage());
             bullet.transform.position = tranformWeapon.position;
             bullet.tag = tag;
         }
@@ -78,7 +80,9 @@ namespace View
         {
             if (other.gameObject.CompareTag("Enemy"))
             {
-                _player.Hit(2);
+                var damage = other.gameObject.GetComponent<IBullet>().GetDamage();
+                Debug.Log($"damage off enemy {damage}");
+                _player.Hit(damage);
             }
         }
     }

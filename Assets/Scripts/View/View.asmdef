@@ -2,7 +2,11 @@
     "name": "View",
     "references": [
         "GUID:6ba261a2dd7cc0f43af81f2dee9697aa",
-        "GUID:3d48e139d270966479e1f05b9cb457c6"
+        "GUID:3d48e139d270966479e1f05b9cb457c6",
+        "GUID:495a2b6ba2e3e6348a77bf9ff1a7a037",
+        "GUID:9c65321d957dec14b9c20ef1f5279a8d",
+        "GUID:d75f4aebb656a9b44bd5a8ff5de69420",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

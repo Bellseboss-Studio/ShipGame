@@ -16,7 +16,7 @@ namespace Player.PlayerTDD
 
             player.Shoot();
 
-            bulletView.Received(1).Shoot(Arg.Any<string>());
+            bulletView.Received(1).Shoot(Arg.Any<IWeapon>());
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace Player.PlayerTDD
 
             player.Shoot();
 
-            bulletView.Received(1).Shoot("GenericBullet");
+            bulletView.Received(1).Shoot(weapon);
         }
     }
 }

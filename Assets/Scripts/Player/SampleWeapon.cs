@@ -6,5 +6,10 @@
         {
             return "GenericBullet";
         }
+
+        public float GetDamage()
+        {
+            return 2;
+        }
     }
 }

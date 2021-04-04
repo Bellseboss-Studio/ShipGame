@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enemy;
+using UnityEngine;
 
 namespace View.EnemyFactory
 {
@@ -8,10 +9,10 @@ namespace View.EnemyFactory
 
         public EnemysFactory(EnemysConfiguration enemysConfiguration)
         {
-            this._enemysConfiguration = enemysConfiguration;
+            _enemysConfiguration = enemysConfiguration;
         }
         
-        public EnemyView Create(string id)
+        public IEnemyView Create(string id)
         {
             var prefab = _enemysConfiguration.GetEnemyPrefabById(id);
 

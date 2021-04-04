@@ -135,7 +135,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &9196460981927972635
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -180,3 +180,4 @@ MonoBehaviour:
   bulletsConfiguration: {fileID: 11400000, guid: 749c122f0b4077c44a0727f897b0b8b5,
     type: 2}
   tranformWeapon: {fileID: 5429475621369994226}
+  points: 3

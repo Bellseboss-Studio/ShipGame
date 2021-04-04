@@ -31,10 +31,10 @@ namespace Player
 
         public void Shoot()
         {
-            _bulletView.Shoot(_weapon.GetBulletId());
+            _bulletView.Shoot(_weapon);
         }
 
-        public void Hit(int demange)
+        public void Hit(float demange)
         {
             Health -= demange;
             Notify();
