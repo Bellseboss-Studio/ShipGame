@@ -18,4 +18,4 @@ Puntuación del player
 3) Placeholders para Sprites, Musica y Sfx
 
 
-Documentación Tecnica en la [wiki](wiki)
+Documentación Tecnica en la [wiki](https://github.com/Bellseboss-Studio/ShipGame/wiki)
