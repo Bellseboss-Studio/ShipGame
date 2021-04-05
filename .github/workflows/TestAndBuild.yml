@@ -1,42 +1,55 @@
-name: Actions 😎
 
-on: [push, pull_request]
+name: GenerandoBuilds
+
+on:
+  push: { branches: [main] }
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
-    name: Build my project ✨
+  buildAndTestForSomePlatforms:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - ./
+        unityVersion:
+          - 2020.3.1f1
+        targetPlatform:
+          - Android #Android
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - WebGL
+          - StandaloneOSX
     steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           lfs: true
-
-      # Cache
-      - uses: actions/cache@v2
+      - uses: actions/cache@v1.1.0
         with:
-          path: Library
-          key: Library
-
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-
+            Library-
+      - uses: webbertakken/unity-test-runner@v1.3
+        id: testRunner
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+      - uses: actions/upload-artifact@v1
         with:
-          targetPlatform: WebGL
-
-      # Output
-      - uses: actions/upload-artifact@v2
+          name: Test results (all modes)
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
+      - uses: webbertakken/unity-builder@v0.10
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
+      - uses: actions/upload-artifact@v1
         with:
           name: Build
           path: build
