@@ -3,6 +3,7 @@ using Enemy;
 using Scene;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 namespace View
 {

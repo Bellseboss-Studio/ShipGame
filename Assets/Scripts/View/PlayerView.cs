@@ -23,6 +23,7 @@ namespace View
         
         [SerializeField] private BulletsConfiguration bulletsConfiguration;
         [SerializeField] private Transform tranformWeapon;
+        [SerializeField] private ParallaxEfect parallaxEfect;
 
 
         private void Start()
@@ -32,6 +33,7 @@ namespace View
             _player = new Player.Player(speed, this, health, this,new SampleWeapon());
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _bulletFactory = new BulletsFactory(Instantiate(bulletsConfiguration));
+            parallaxEfect.ObserverPlayer(_player);
         }
 
 

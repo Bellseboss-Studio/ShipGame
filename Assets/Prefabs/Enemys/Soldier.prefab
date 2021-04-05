@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Soldier
-  speedGeneric: 20
+  speedGeneric: 100
   health: 5
   bulletsConfiguration: {fileID: 11400000, guid: 749c122f0b4077c44a0727f897b0b8b5,
     type: 2}

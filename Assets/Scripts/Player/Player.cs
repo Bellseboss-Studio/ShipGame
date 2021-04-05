@@ -2,7 +2,7 @@
 
 namespace Player
 {
-    public class Player: IPlayer
+    public class Player: IPlayer, IPlayerMovment
     {
         private readonly IEngine _engine;
         private readonly IBulletView _bulletView;
@@ -10,6 +10,7 @@ namespace Player
         private IWeapon _weapon;
         
         public event Action<float> OnHealthUpdated;
+        public event Action<float> OnPlayerMove;
 
         public float Velocity { get; private set; }
         public float Health { get; private set; }
@@ -23,10 +24,10 @@ namespace Player
             _engine = new Engine(speed);
         }
 
-
         public void Move(float input)
         {
             Velocity = _engine.Move(input);
+            NotifyMovment();
         }
 
         public void Shoot()
@@ -52,6 +53,11 @@ namespace Player
         private void Notify()
         {
             OnHealthUpdated?.Invoke(Health);
+        }
+        
+        private void NotifyMovment()
+        {
+            OnPlayerMove?.Invoke(Velocity);
         }
     }
 }

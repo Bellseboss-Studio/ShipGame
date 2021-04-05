@@ -2,6 +2,7 @@
 using Scene;
 using UnityEngine;
 using View.EnemyFactory;
+using Debug = System.Diagnostics.Debug;
 using Random = UnityEngine.Random;
 
 namespace View
@@ -10,6 +11,7 @@ namespace View
     {
         [SerializeField] private EnemysConfiguration enemysConfiguration;
         [SerializeField] private EscenarioView scene;
+        [SerializeField] private Transform topLimint, bottonLimit;
         private EnemysFactory _powerUpsFactory;
 
         private void Start()
@@ -19,12 +21,11 @@ namespace View
 
         private void Update()
         {
-            if (Random.Range(0, 1000) < 3)
-            {
-                var enemy = _powerUpsFactory.Create("Soldier");
-                Debug.Log($"{enemy.GetEnemyLogic().ToString()}");
-                scene.ObserverEnemy(enemy);
-            }
+            if (Random.Range(0, 1000) >= 3) return;
+            var enemy = _powerUpsFactory.Create("Soldier") as EnemyView;
+            Debug.Assert(enemy != null, nameof(enemy) + " != null");
+            enemy.gameObject.transform.position = new Vector3(transform.position.x, Random.Range(topLimint.position.y,bottonLimit.position.y), 0);
+            scene.ObserverEnemy(enemy);
         }
     }
 }
