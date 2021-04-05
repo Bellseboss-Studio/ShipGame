@@ -1,57 +1,41 @@
-name: GenerandoBuilds
+name: Actions 😎
 
-on:
-  push: { branches: [main] }
-
-env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+on: [push, pull_request]
 
 jobs:
-  buildAndTestForSomePlatforms:
-    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+  build:
+    name: Build my project ✨
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        unityVersion:
-          - 2020.3.1f1
-        targetPlatform:
-          - Android #Android
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - WebGL
-          - StandaloneOSX
     steps:
-      - uses: actions/checkout@v2
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           lfs: true
-      - uses: actions/cache@v1.1.0
+
+      # Cache
+      - uses: actions/cache@v2
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-
-            Library-
-            
-      - uses: game-ci/unity-test-runner@v2
-        id: testRunner
+          path: Library
+          key: Library
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results (all modes)
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
-      
-      - uses: game-ci/unity-builder@v2
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          targetPlatform: ${{ matrix.targetPlatform }}
+          targetPlatform: WebGL
+
+      # Output
       - uses: actions/upload-artifact@v2
         with:
           name: Build
