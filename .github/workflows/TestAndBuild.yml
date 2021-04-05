@@ -13,6 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        projectPath:
+          - test-project
         unityVersion:
           - 2020.3.1f1
         targetPlatform:
