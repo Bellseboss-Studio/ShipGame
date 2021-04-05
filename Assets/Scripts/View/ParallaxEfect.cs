@@ -9,6 +9,7 @@ namespace View
         [SerializeField] private RawImage background;
 
         [SerializeField] private float velocityParallax;
+        [SerializeField] private float velocityParallaxInY;
         private float _parallaxInY;
 
         public void ObserverPlayer(IPlayerMovment enemyView)
@@ -19,6 +20,9 @@ namespace View
         public void UpdateParallaxEfect(float movmentY)
         {
             _parallaxInY = movmentY;
+            var uvBg =background.uvRect;
+            _parallaxInY = uvBg.y += (_parallaxInY/1000)/velocityParallaxInY;
+            background.uvRect = uvBg;
         }
         
         // Update is called once per frame
@@ -26,7 +30,6 @@ namespace View
         {
             var uvBg =background.uvRect; 
             uvBg.x += velocityParallax;
-            _parallaxInY = uvBg.y += _parallaxInY/1000;
             background.uvRect = uvBg;
         }
     }

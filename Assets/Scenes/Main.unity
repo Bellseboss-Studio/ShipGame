@@ -1266,6 +1266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 1693539931}
   velocityParallax: 0.001
+  velocityParallaxInY: 20
 --- !u!1 &1942996222
 GameObject:
   m_ObjectHideFlags: 0
