@@ -34,11 +34,13 @@ jobs:
             Library-${{ matrix.projectPath }}-
             Library-
             
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v2
+      - uses: game-ci/unity-test-runner@v2
+        id: testRunner
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           
       - uses: actions/upload-artifact@v2
