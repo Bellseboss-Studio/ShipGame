@@ -6,23 +6,40 @@ jobs:
   build:
     name: Build my project ✨
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - ./
+        unityVersion:
+          - 2020.1.13f1
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - Android # Build an Android player.
+          - WebGL # WebGL.
     steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           lfs: true
-
-      # Cache
       - uses: actions/cache@v2
         with:
-          path: Library
-          key: Library
-
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v2
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-
+            Library-
+          
+      - uses: game-ci/unity-test-runner@v2
+        id: testRunner
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results (all modes)
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
